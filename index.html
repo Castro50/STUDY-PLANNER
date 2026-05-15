@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner |Cavendish University</title>
+<style>
+* {}
+     margin: 0;  
+     padding: 0;
+     box-sizing: border-box;
+}
+
+body {
+    front-family: 'Segoe UI',Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.planner-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    padding: 30px;
+}
+
+h1 {
+    front-size: 2rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.add-task-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    front-weight: 600;
+    color: #555;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    front-size: 14px;
+}
+
+.btn-add {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    front-size: 16px;
+    front-weight: 600;
+    width; 100%;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+}
+
+.filter-buttons {
+    display:flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: #e0e0e0;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    front-weight: 500;
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.task-list {
+    list-style: none;
+    max-height:500px;
+    overflow-y: auto;
+}
+
+.task-item {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    transition: all 0.3s; 
+}
+
+.task-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0,1);
+}
+
+.task-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.task-check {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.task-details {
+    flex: 1:
+}
+
+.task-name {
+    front-weight: 600;
+    front-size: 16px
+}
+
+.task-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+    front-size: 12px;
+    color: #888;
+}
+
+.task-subject {
+    background: #e8f4f8;
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
+.completed .task-name {
+    text-decoration:line-through;
+    color: #999;
+}
+
+.delete-btn {
+    background: #ff4444;
+    color: white;
+    boarder: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+footer {
+    text-align: centre;
+    margin-top: 20px;
+    color: white;
+    front-size: 12px;
+}
+
+@media (max-widith:600px) {
+    .planner-card {
+        padding: 15px;
+    }
+    .task-item {
+        flex-direction:column;
+        gap: 10px;
+    }
+    .delete-btn {
+        width: 100%;
+ }
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="planner-card">
+            <h1>Study Planner</h1>
+            <div class="subtitle">Organize your studies. Never miss a deadline</div>
+
+            <div class="add-task-section">
+                <div class="form-group">
+                    <label>TaskName</label>
+                    <input type="text" id="taskName" placeholder="e.g., Complete Web Programing assignment">
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="subject" placeholder="e.g., Internet & Web Programming">
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                <input="date" id="dueDate">
+                </div>
+                <button class="btn-add" onclick="addTask()">+ Add Study Task</button>
+            </div>
+
+            <div class="filter buttons">
+                <button class="filter-btn active" onclick="filterTasks('all')">All Tasks</button>
+                <button class="filter btn" onclick="filterTasks('pending')">pending</button>
+                <button class="filter btn" onclick="filterTasks('completed')">Completed</button>
+            </div>
+
+            <ul class="tasks-list" id="tasksList">
+                <li class="empty-state"> No tasks yet. Add your first study task above!</li>
+            </ul>
+        </div>
+        <footer>
+            Study Planner Solving real-world academic organization problems
+        </footer>
+    </div>
+
+    <script>
+        let tasks =[];
+        let currentfilter ='all';
+
+        // Load tasks from localStorage when page opens
+        function loadTasks() {
+            const savedTasks =localStorage.getItem('studyPlannerTasks');
+            if (savedTasks) {
+                tasks =JSON.parse(savedTasks);
+            } else {
+                // Sample tasks for demonstation
+                tasks = [
+                    { id: 1, name: 'Complete HTML/CSS layout'subject:'Web Programming', dueDate:'2026-05-20', completed: false },
+                    { id: 2, name: 'Write exam report', subject:'Project', dueDate: '2026-05-18', completed: true },
+                    { id: 3, name: 'Practice responsive design', subject: 'Frontend', dueDate:'2026=05-22', completed: false }
+                ];
+            }
+            displayTasks();
+            }
+        
+            // Save tasks to localStorage
+            function saveTasks() {
+                localStorage,setItem('studyPlannerTasks', JSON.stringify(tasks));
+            }
+
+            // Add new task
+            function addTask() {
+                const name =document.getElementById('taskName').value;
+                const subject =document.getElementById('subject').value;
+                const dueDate =document.getElementById('dueDate').value;
+
+                if (name=== '') {
+                    alert('Please enter a task name');
+                    return;
+                }
+
+                const newTask= {
+                    id: Date.now(),
+                    name: name,
+                    subject: subject|| 'General',
+                    dueDate: dueDate|| 'No date set',
+                    completed: false
+                };
+
+                tasks.unshift(newTask);
+                saveTasks();
+                displayTasks();
+
+                // Clear inputs
+                document.getElementById('taskName').value ='';
+                document.getElementById('subject').value ='';
+                document.getElementById('dueDate').value ='';
+            }
+
+            // Toggle task completion
+            function toggleTask(id){
+                const task =tasks.find(t => t.id === id);
+                if (task) {         
+            task.completed =!task.completed;
+            saveTasks();
+            displayTasks();
+                }
+            }
+            // Delete task
+            function deleteTask(id)
+            {
+                if (comfirm('Delete this task?')) {
+                    tasks =tasks.filter(t => t.id !== id);
+                    saveTasks();
+                    displayTasks();
+                }
+            }
+
+            // Filter tasks
+            function filterTasks(filter) {
+                currentfilter =filter;
+
+                // Update active button styling
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.classList.add('active');
+
+                displayTasks();
+            }
+
+            // Display tasks based on current filter
+            function displayTasks() {
+                let filteredTasks =tasks;
+
+                if (currentfilter === 'pending') {
+                    filteredTasks =tasks.filter(t => !t.completed);
+                } else if (currentfilter === 'completed') {
+                    filteredTasks =tasks.filter(t => t.completed);
+                }
+
+                const taskslist =document.getElementById('tasksList');
+
+                if (filteredTasks.length === 0) {
+                    tasklist,innerHTML = '<li class="empty-state">No task to display</li>';
+                    return;
+                }
+
+                tasksList.innerHTML='';
+                filteredTasks.forEach(task => {
+                    const li =document.createElement('li');
+                    li.className ='task-item';
+                    if (task.completed)li.classList.add('completed');
+
+                    li.innerHTML = `
+                    <div class="task-info">
+                        <input type="checkbox" class="task-check" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                        <div class=task-"details">
+                            <div class="task-name">${escapeHtml(task.name)}</div>
+                            <div class="task-meta">
+                                <spam class="task-subject">${escapeHtml(task.subject)}</span>
+                                    <span>Due: ${task.dueDate}</span>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+                                    ';
+                                    tasksList.appendChild(li);
+                                });
+                                }
+
+                                // Prevent XSS attacks
+                                function escapeHtml(text) {
+                                const div = document.createElement('div');
+                                div. textContent = text;
+                                return div.innerHTML;
+                                }
+
+                                // Initialize the app
+                                loadTasks();
+
+                                // Set default due date to tomorrow
+                                const tomorrow = new Date();
+                                tomorrow.setDate(tomorrow.getDate() + 1);
+                                document.getElementById('dueDate').value = tomorrow.toISOSting().split('T')[0];
+                                </script>
+                                </body>
+                                </html>
