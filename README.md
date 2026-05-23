@@ -28,7 +28,7 @@ localStorage for client-side data persistence
 ## Author
 Castro50
 Cavendish University Uganda
-Bachelor of Software Engineering
+Department of Computer Sciences
 
 ## GitHub Repository
 https://github.com/Castro50/study-planner
